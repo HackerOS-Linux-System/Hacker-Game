@@ -1,15 +1,14 @@
 use bevy::prelude::*;
 use bevy_egui::EguiPlugin;
 use bevy_rapier2d::prelude::*;
+use crate::states::AppState;
+use crate::systems::{player::*, ai::*, hacking::*, skills::*, level_gen::*, hacker_os::*, graphics::*};
 
 mod components;
 mod resources;
 mod states;
 mod systems;
 mod utils;
-
-use crate::states::AppState;
-use crate::systems::{player::*, ai::*, hacking::*, skills::*, level_gen::*, hacker_os::*, graphics::*};
 
 pub struct HackerGamePlugin;
 
@@ -21,6 +20,7 @@ impl Plugin for HackerGamePlugin {
             .add_plugins(RapierDebugRenderPlugin::default())
             .add_state::<AppState>()
             .init_resource::<resources::SkillTree>()
+            .init_resource::<resources::TerminalState>()
             .add_startup_system(setup_level)
             .add_startup_system(setup_graphics)
             .add_system(player_movement.in_set(OnUpdate(AppState::Playing)))
@@ -28,7 +28,9 @@ impl Plugin for HackerGamePlugin {
             .add_system(hacking_system.in_set(OnUpdate(AppState::Playing)))
             .add_system(upgrade_skill.in_set(OnUpdate(AppState::Menu)))
             .add_system(terminal_system.in_set(OnUpdate(AppState::Playing)))
-            .add_system(generate_level.in_schedule(OnEnter(AppState::Playing)));
+            .add_system(generate_level.in_schedule(OnEnter(AppState::Playing)))
+            .add_system(update_neon_material.in_set(OnUpdate(AppState::Playing)))
+            .add_system(animate_player.in_set(OnUpdate(AppState::Playing)));
     }
 }
 
