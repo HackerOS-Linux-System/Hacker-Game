@@ -1,0 +1,31 @@
+[package]
+name = "hacker_game"
+version = "0.1.0"
+edition = "2021"
+description = "2D stealth/hacking/puzzle platformer set in a cyberpunk network"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+bevy = { version = "0.14.0", features = ["dynamic_linking"] } # Silnik gry, dynamic linking dla szybszego kompilowania
+bevy_egui = "0.25.0" # UI dla skill tree i mini-gier
+bevy_rapier2d = { version = "0.26.0", features = ["debug-render"] } # Fizyka 2D i raycasting
+noise = "0.9.0" # Generacja losowych poziomów (Perlin noise)
+rand = "0.8.5" # Losowość dla BSP i mini-gier
+bevy_sprite_animation = "0.3.0" # Animacje sprite'ów (np. haker, ataki sieciowe)
+bevy_kira_audio = "0.20.0" # Dźwięk (muzyka synthwave, efekty)
+ratatui = "0.27.2" # Terminal HackerOS
+crossterm = "0.28.1" # Obsługa inputu w terminalu
+serde = { version = "1.0.210", features = ["derive"] } # Serializacja (np. zapis configów)
+serde_json = "1.0.128" # Parsowanie JSON dla configów i save'ów
+
+[dev-dependencies]
+# Opcjonalne: dla testów jednostkowych, jeśli planujesz
+criterion = "0.5.1" # Benchmarking (np. wydajność generacji poziomów)
+
+[profile.dev]
+opt-level = 1 # Lekka optymalizacja w trybie dev dla szybszego debugowania
+
+[profile.release]
+opt-level = 3 # Maksymalna optymalizacja w release
+lto = "thin" # Link-time optimization dla mniejszego rozmiaru binarki
